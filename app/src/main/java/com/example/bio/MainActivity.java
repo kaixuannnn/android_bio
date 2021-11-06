@@ -8,25 +8,30 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import com.example.bio.data.Bio;
 import com.example.bio.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
+    private final Bio bio = new Bio();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //data binding
         binding= DataBindingUtil.setContentView(this,R.layout.activity_main);
-        binding.doneButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addHobbies(v);
-            }
-        });
+        bio.setName("Paulo Dichone");
+
+        //bound the data
+        binding.setBio(bio);
+        binding.doneButton.setOnClickListener(this::addHobbies);
     }
 
     public void addHobbies(View view) {
-        binding.hobbiesText.setText(String.format("Hobbies: %s", binding.enterHobbies.getText().toString().trim()));
+
+        bio.setHobbies(String.format("Hobbies: %s", binding.enterHobbies.getText().toString().trim()));
+//        binding.hobbiesText.setText(String.format("Hobbies: %s", binding.enterHobbies.getText().toString().trim()));
+        binding.invalidateAll();
         binding.hobbiesText.setVisibility(View.VISIBLE);
 
         //hide keyboard
